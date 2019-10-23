@@ -5,6 +5,7 @@ import {repository} from '@loopback/repository';
 import {Credentials, JWT_SECRET} from '../auth';
 import {promisify} from 'util';
 import {hash, compare} from 'bcrypt';
+import {secured, SecuredType} from '../auth';
 
 const {sign} = require('jsonwebtoken');
 const signAsync = promisify(sign);
@@ -19,6 +20,7 @@ export class UserController {
   ) {}
 
   @post('/users')
+  @secured(SecuredType.HAS_ROLES, ['ADMIN'])
   async createUser(@requestBody() user: User): Promise<User> {
     const pass = user.password;
     const hashedPass = await hash(pass, BCRYPT_SALT_VALUE);
