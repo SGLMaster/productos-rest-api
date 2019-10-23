@@ -33,8 +33,8 @@
   "repository": {
     "type": "git"
   },
-  "author": "",
-  "license": "",
+  "author": "Willians Briceño",
+  "license": "MIT",
   "files": [
     "README.md",
     "index.js",
