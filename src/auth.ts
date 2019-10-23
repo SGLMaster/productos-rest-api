@@ -101,7 +101,7 @@ export namespace MyAuthBindings {
 }
 
 // the strategy provider will parse the specifed strategy, and act accordingly
-export class MyAuthAuthenticationStrategyProvider
+export class MyAuthStrategyProvider
   implements Provider<AuthenticationStrategy | undefined> {
   constructor(
     @inject(AuthenticationBindings.METADATA)
