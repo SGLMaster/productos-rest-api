@@ -19,11 +19,12 @@ import {
 } from '@loopback/rest';
 import {Productos} from '../models';
 import {ProductosRepository} from '../repositories';
+import {secured, SecuredType} from '../auth';
 
 export class ProductosController {
   constructor(
     @repository(ProductosRepository)
-    public productosRepository : ProductosRepository,
+    public productosRepository: ProductosRepository,
   ) {}
 
   @post('/productos', {
@@ -32,15 +33,18 @@ export class ProductosController {
         description: 'Productos model instance',
         content: {'application/json': {schema: getModelSchemaRef(Productos)}},
       },
+      '401': {
+        description: 'Unauthorized',
+      },
     },
   })
+  @secured(SecuredType.HAS_ROLES, ['ADMIN'])
   async create(
     @requestBody({
       content: {
         'application/json': {
           schema: getModelSchemaRef(Productos, {
             title: 'NewProductos',
-            
           }),
         },
       },
@@ -59,7 +63,8 @@ export class ProductosController {
     },
   })
   async count(
-    @param.query.object('where', getWhereSchemaFor(Productos)) where?: Where<Productos>,
+    @param.query.object('where', getWhereSchemaFor(Productos))
+    where?: Where<Productos>,
   ): Promise<Count> {
     return this.productosRepository.count(where);
   }
@@ -77,7 +82,8 @@ export class ProductosController {
     },
   })
   async find(
-    @param.query.object('filter', getFilterSchemaFor(Productos)) filter?: Filter<Productos>,
+    @param.query.object('filter', getFilterSchemaFor(Productos))
+    filter?: Filter<Productos>,
   ): Promise<Productos[]> {
     return this.productosRepository.find(filter);
   }
@@ -88,8 +94,12 @@ export class ProductosController {
         description: 'Productos PATCH success count',
         content: {'application/json': {schema: CountSchema}},
       },
+      '401': {
+        description: 'Unauthorized',
+      },
     },
   })
+  @secured(SecuredType.HAS_ROLES, ['ADMIN'])
   async updateAll(
     @requestBody({
       content: {
@@ -99,7 +109,8 @@ export class ProductosController {
       },
     })
     productos: Productos,
-    @param.query.object('where', getWhereSchemaFor(Productos)) where?: Where<Productos>,
+    @param.query.object('where', getWhereSchemaFor(Productos))
+    where?: Where<Productos>,
   ): Promise<Count> {
     return this.productosRepository.updateAll(productos, where);
   }
@@ -121,8 +132,12 @@ export class ProductosController {
       '204': {
         description: 'Productos PATCH success',
       },
+      '401': {
+        description: 'Unauthorized',
+      },
     },
   })
+  @secured(SecuredType.HAS_ROLES, ['ADMIN'])
   async updateById(
     @param.path.string('id') id: string,
     @requestBody({
@@ -142,8 +157,12 @@ export class ProductosController {
       '204': {
         description: 'Productos PUT success',
       },
+      '401': {
+        description: 'Unauthorized',
+      },
     },
   })
+  @secured(SecuredType.HAS_ROLES, ['ADMIN'])
   async replaceById(
     @param.path.string('id') id: string,
     @requestBody() productos: Productos,
@@ -156,8 +175,12 @@ export class ProductosController {
       '204': {
         description: 'Productos DELETE success',
       },
+      '401': {
+        description: 'Unauthorized',
+      },
     },
   })
+  @secured(SecuredType.HAS_ROLES, ['ADMIN'])
   async deleteById(@param.path.string('id') id: string): Promise<void> {
     await this.productosRepository.deleteById(id);
   }
