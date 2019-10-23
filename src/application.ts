@@ -4,6 +4,13 @@ import {
   RestExplorerBindings,
   RestExplorerComponent,
 } from '@loopback/rest-explorer';
+import {AuthenticationBindings} from '@loopback/authentication';
+import {
+  MyAuthMetadataProvider,
+  MyAuthStrategyProvider,
+  MyAuthActionProvider,
+  MyAuthBindings,
+} from './auth';
 import {RepositoryMixin} from '@loopback/repository';
 import {RestApplication} from '@loopback/rest';
 import {ServiceMixin} from '@loopback/service-proxy';
@@ -27,6 +34,15 @@ export class ProductosRestApiApplication extends BootMixin(
       path: '/explorer',
     });
     this.component(RestExplorerComponent);
+
+    // this.component(AuthenticationComponent);
+    this.bind(AuthenticationBindings.METADATA).toProvider(
+      MyAuthMetadataProvider,
+    );
+    this.bind(MyAuthBindings.STRATEGY).toProvider(MyAuthStrategyProvider);
+    this.bind(AuthenticationBindings.AUTH_ACTION).toProvider(
+      MyAuthActionProvider,
+    );
 
     this.projectRoot = __dirname;
     // Customize @loopback/boot Booter Conventions here
