@@ -4,9 +4,12 @@ import {UserRepository, UserRoleRepository} from '../repositories';
 import {repository} from '@loopback/repository';
 import {Credentials, JWT_SECRET} from '../auth';
 import {promisify} from 'util';
+import {hash, compare} from 'bcrypt';
 
 const {sign} = require('jsonwebtoken');
 const signAsync = promisify(sign);
+
+const BCRYPT_SALT_VALUE = 12;
 
 export class UserController {
   constructor(
@@ -17,7 +20,11 @@ export class UserController {
 
   @post('/users')
   async createUser(@requestBody() user: User): Promise<User> {
-    return this.userRepository.create(user);
+    const pass = user.password;
+    const hashedPass = await hash(pass, BCRYPT_SALT_VALUE);
+    const hashedUser = {...user, password: hashedPass};
+
+    return this.userRepository.create(hashedUser);
   }
 
   @post('/users/login')
@@ -31,7 +38,10 @@ export class UserController {
     });
     if (!user) throw new HttpErrors.Unauthorized('Credenciales inválidos');
 
-    const isPasswordMatched = user.password === credentials.password;
+    const isPasswordMatched = await compare(
+      credentials.password,
+      user.password,
+    );
     if (!isPasswordMatched)
       throw new HttpErrors.Unauthorized('Credenciales inválidos');
 
