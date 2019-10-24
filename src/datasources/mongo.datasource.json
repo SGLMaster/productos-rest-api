@@ -1,0 +1,11 @@
+{
+  "name": "mongo",
+  "connector": "mongodb",
+  "url": "",
+  "host": "localhost",
+  "port": 27017,
+  "user": "loopback",
+  "password": "wwog567",
+  "database": "productos",
+  "useNewUrlParser": true
+}
