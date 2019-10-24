@@ -1,12 +1,19 @@
-import {inject, ValueOrPromise} from '@loopback/core';
+import {
+  inject,
+  lifeCycleObserver,
+  LifeCycleObserver,
+  ValueOrPromise,
+} from '@loopback/core';
 import {juggler} from '@loopback/repository';
 import * as config from './testdb.datasource.json';
 
-export class TestdbDataSource extends juggler.DataSource {
-  static dataSourceName = 'memorydb';
+@lifeCycleObserver('datasource')
+export class TestdbDataSource extends juggler.DataSource
+  implements LifeCycleObserver {
+  static dataSourceName = 'testdb';
 
   constructor(
-    @inject('datasources.config.memorydb', {optional: true})
+    @inject('datasources.config.testdb', {optional: true})
     dsConfig: object = config,
   ) {
     super(dsConfig);
@@ -27,5 +34,3 @@ export class TestdbDataSource extends juggler.DataSource {
     return super.disconnect();
   }
 }
-
-export const testdb: TestdbDataSource = new TestdbDataSource();
