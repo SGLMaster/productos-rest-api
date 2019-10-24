@@ -4,6 +4,7 @@ import {
   RoleRepository,
   UserRoleRepository,
 } from '../../repositories';
+import {Productos} from '../../models/productos.model';
 import {testdb} from '../fixtures/datasources/testdb.datasource';
 
 export async function givenEmptyDatabase() {
@@ -11,4 +12,21 @@ export async function givenEmptyDatabase() {
   await new UserRepository(testdb).deleteAll();
   await new RoleRepository(testdb).deleteAll();
   await new UserRoleRepository(testdb).deleteAll();
+}
+
+export function givenProductData(data?: Partial<Productos>) {
+  return Object.assign(
+    {
+      id: 'iphone_x',
+      nombre: 'iPhone X',
+      desc: 'A smartphone from Apple Inc.',
+      cantidad: 10,
+      peso: 100,
+    },
+    data,
+  );
+}
+
+export async function givenProduct(data?: Partial<Productos>) {
+  return new ProductosRepository(testdb).create(givenProductData(data));
 }
