@@ -1,6 +1,6 @@
 import {DefaultCrudRepository} from '@loopback/repository';
 import {User, UserRelations} from '../models';
-import {MemorydbDataSource} from '../datasources';
+import {MongoDataSource} from '../datasources';
 import {inject} from '@loopback/core';
 
 export class UserRepository extends DefaultCrudRepository<
@@ -8,7 +8,9 @@ export class UserRepository extends DefaultCrudRepository<
   typeof User.prototype.id,
   UserRelations
 > {
-  constructor(@inject('datasources.memorydb') dataSource: MemorydbDataSource) {
+  constructor(
+    @inject('datasources.mongo') dataSource: MongoDataSource,
+  ) {
     super(User, dataSource);
   }
 }
