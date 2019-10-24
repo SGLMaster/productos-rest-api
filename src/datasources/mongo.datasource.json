@@ -1,11 +1,6 @@
 {
   "name": "mongo",
   "connector": "mongodb",
-  "url": "",
-  "host": "localhost",
-  "port": 27017,
-  "user": "loopback",
-  "password": "wwog567",
-  "database": "productos",
+  "url": "mongodb+srv://loopback:wwog567@cluster0-llcrb.mongodb.net/productos",
   "useNewUrlParser": true
 }
