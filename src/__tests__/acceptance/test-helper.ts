@@ -1,25 +1,18 @@
 import {ProductosRestApiApplication} from '../..';
-import {
-  createRestAppClient,
-  givenHttpServerConfig,
-  Client,
-} from '@loopback/testlab';
+import {createRestAppClient, Client} from '@loopback/testlab';
+import {testdb} from '../helpers/database.helpers';
 
 export async function setupApplication(): Promise<AppWithClient> {
-  const restConfig = givenHttpServerConfig({
-    // Customize the server configuration here.
-    // Empty values (undefined, '') will be ignored by the helper.
-    //
-    // host: process.env.HOST,
-    // port: +process.env.PORT,
-  });
-
   const app = new ProductosRestApiApplication({
-    rest: restConfig,
+    rest: {
+      port: 0,
+    },
   });
-
   await app.boot();
   await app.start();
+
+  // needed so the database injected to the repositories isn't the default
+  app.bind('datasources.memorydb').to(testdb);
 
   const client = createRestAppClient(app);
 
