@@ -5,7 +5,9 @@ import {
   UserRoleRepository,
 } from '../../repositories';
 import {Productos} from '../../models/productos.model';
-import {testdb} from '../fixtures/datasources/testdb.datasource';
+import {TestdbDataSource} from '../fixtures/datasources/testdb.datasource';
+
+export const testdb = new TestdbDataSource();
 
 export async function givenEmptyDatabase() {
   await new ProductosRepository(testdb).deleteAll();
