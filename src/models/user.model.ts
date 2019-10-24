@@ -21,7 +21,6 @@ export class User extends Entity {
   })
   password: string;
 
-
   constructor(data?: Partial<User>) {
     super(data);
   }
