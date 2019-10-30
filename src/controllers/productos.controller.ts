@@ -51,7 +51,10 @@ export class ProductosController {
     })
     productos: Productos,
   ): Promise<Productos> {
-    return this.productosRepository.create(productos);
+    return this.productosRepository.create({
+      ...productos,
+      lastModified: new Date(Date.now()).toISOString(),
+    });
   }
 
   @get('/productos/count', {
@@ -112,7 +115,10 @@ export class ProductosController {
     @param.query.object('where', getWhereSchemaFor(Productos))
     where?: Where<Productos>,
   ): Promise<Count> {
-    return this.productosRepository.updateAll(productos, where);
+    return this.productosRepository.updateAll(
+      {...productos, lastModified: new Date(Date.now()).toISOString()},
+      where,
+    );
   }
 
   @get('/productos/{id}', {
@@ -149,7 +155,10 @@ export class ProductosController {
     })
     productos: Productos,
   ): Promise<void> {
-    await this.productosRepository.updateById(id, productos);
+    await this.productosRepository.updateById(id, {
+      ...productos,
+      lastModified: new Date(Date.now()).toISOString(),
+    });
   }
 
   @put('/productos/{id}', {
@@ -167,7 +176,10 @@ export class ProductosController {
     @param.path.string('id') id: string,
     @requestBody() productos: Productos,
   ): Promise<void> {
-    await this.productosRepository.replaceById(id, productos);
+    await this.productosRepository.replaceById(id, {
+      ...productos,
+      lastModified: new Date(Date.now()).toISOString(),
+    });
   }
 
   @del('/productos/{id}', {

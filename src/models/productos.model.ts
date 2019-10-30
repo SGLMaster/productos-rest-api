@@ -33,6 +33,11 @@ export class Productos extends Entity {
   })
   peso: number;
 
+  @property({
+    type: 'date',
+  })
+  lastModified: string;
+
   constructor(data?: Partial<Productos>) {
     super(data);
   }
